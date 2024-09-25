@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Dashboard</h2>
+    <table class="table table-striped"> <!-- Bootstrap table classes -->
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Assigned To</th>
+                <th>Created At</th>
+                <th>Completed At</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.assigned_to }}</td>
+                <td>{{ task.created_at }}</td>
+                <td>{{ task.completed_at }}</td>
+                <td>{{ task.deadline }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 style="margin-top: 10px;">User Task Completion Rates</h3>
+    <img src="data:image/png;base64,{{ chart }}" alt="Task Completion Rate Graph" class="img-fluid mb-4"> <!-- Responsive image -->
+</div>
+{% endblock %}

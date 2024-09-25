@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Select User to View Tasks</h2>
+    
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="selected_user" class="form-label">Choose a user:</label>
+            <select id="selected_user" name="selected_user" class="form-select" required>
+                <option value="">-- Select User --</option>
+                {% for user in users %}
+                <option value="{{ user.id }}" {% if user.id == selected_user %}selected{% endif %}>
+                    {{ user.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">View Tasks</button>
+    </form>
+
+    {% if user_tasks %}
+    <h2>Tasks for {{ selected_user.name }}</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Completion Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in user_tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.deadline }}</td>
+                <td>{{ task.is_completed|yesno:"Completed,Pending" }}</td>
+                <td>
+                    {% if task.is_completed %}
+                        {{ task.completed_at }}
+                    {% else %}
+                        <form method="POST" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <input type="hidden" name="task_id" value="{{ task.id }}">
+                            <input type="datetime-local" name="completion_time" class="form-control me-2" required>
+                            <button type="submit" class="btn btn-success">Mark as Completed</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="alert alert-warning">No tasks found for the selected user.</p>
+    {% endif %}
+</div>
+{% endblock %}

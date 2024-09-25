@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>User Task Report</h2>
+    <table class="table table-bordered table-striped"> <!-- Added Bootstrap classes -->
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Completed on Time</th>
+                <th>Completed Late</th>
+                <th>Not Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user, metrics in user_metrics.items %}
+            <tr>
+                <td>{{ user }}</td>
+                <td>{{ metrics.on_time }}</td>
+                <td>{{ metrics.late }}</td>
+                <td>{{ metrics.not_completed }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

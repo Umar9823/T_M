@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Add Task</h2>
+    <form method="POST" class="bg-light p-4 rounded shadow" style="max-width: 600px; margin: auto;">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="title" class="form-label">Title:</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <textarea name="description" class="form-control" rows="4" required></textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="assigned_to" class="form-label">Assigned To:</label>
+            <select name="assigned_to" class="form-select" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="approved_by" class="form-label">Approved By:</label>
+            <select id="approved_by" name="approved_by" class="form-select" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">Add Task</button>
+    </form>
+</div>
+{% endblock %}
